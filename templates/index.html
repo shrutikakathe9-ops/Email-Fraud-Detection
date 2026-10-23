@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Fraud Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 20px 8%;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            color: #172554;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            resize: vertical;
+            font-size: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .button {
+            display: block;
+            margin: 25px auto 0;
+            padding: 13px 35px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        /* NEW: History button styling */
+        .history-button {
+            display: block;
+            width: fit-content;
+            margin: 15px auto 0;
+            padding: 12px 25px;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            background: white;
+            color: #2563eb;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .history-button:hover {
+            background: #172554;
+            border-color: #172554;
+            color: white;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: #b91c1c;
+            text-align: center;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px auto;
+            max-width: 850px;
+            padding: 0 10px;
+        }
+
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+            color: #172554;
+        }
+
+        .feature p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        @media (max-width: 650px) {
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .container {
+                margin: 20px 12px;
+                padding: 22px;
+            }
+
+            .features {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">🛡️ Email Fraud Detection</div>
+
+    <section class="hero">
+        <h1>Detect Potentially Fraudulent Emails</h1>
+        <p>Analyze email content using Machine Learning and NLP.</p>
+    </section>
+
+    <div class="container">
+        <form method="POST" action="/">
+            <label for="email">Paste your email content</label>
+
+            <textarea
+                id="email"
+                name="email_text"
+                placeholder="Paste or type the email you want to analyze..."
+                required
+            >{{ email_text or '' }}</textarea>
+
+            <button class="button" type="submit">
+                🔍 Analyze Email
+            </button>
+        </form>
+
+        <!-- NEW: Opens the saved analysis history -->
+        <a class="history-button" href="{{ url_for('history') }}">
+            📋 View Analysis History
+        </a>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if result %}
+            <div class="result" role="status">
+                <h2>Analysis Result</h2>
+                <p><strong>Model classification:</strong> {{ result.category }}</p>
+                <p><strong>Risk status:</strong> {{ result.risk }}</p>
+                <p>Use this result as an initial screening only, not as proof that an email is safe or fraudulent.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <h3>🤖 Machine Learning</h3>
+            <p>Analyze email patterns using ML techniques.</p>
+        </div>
+
+        <div class="feature">
+            <h3>⚠️ Risk Detection</h3>
+            <p>Identify potentially risky email content.</p>
+        </div>
+
+        <div class="feature">
+            <h3>🛡️ Awareness</h3>
+            <p>Learn common signs of email fraud.</p>
+        </div>
+    </div>
+
+    <footer>Email Fraud Detection &amp; Risk Analytics</footer>
+</body>
+</html>

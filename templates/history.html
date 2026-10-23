@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Analysis History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 25px;
+        }
+        h1 { text-align: center; color: #243447; }
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+        th { background: #243447; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        a { display: inline-block; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Email Analysis History</h1>
+    <a href="/">← Back to Home</a>
+
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Email Text</th>
+                <th>Prediction</th>
+                <th>Risk Level</th>
+                <th>Analyzed At</th>
+            </tr>
+
+            {% for record in records %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td>{{ record[3] }}</td>
+                <td>{{ record[4] }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">No analysis history found.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

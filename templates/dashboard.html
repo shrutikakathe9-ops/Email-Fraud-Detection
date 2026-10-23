@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Fraud Analytics Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 22px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .links {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            background: #1d4ed8;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            max-width: 1000px;
+            margin: 25px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,.06);
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .number {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .total { color: #2563eb; }
+        .phishing { color: #dc2626; }
+        .legitimate { color: #059669; }
+
+        .chart-container {
+            max-width: 650px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.06);
+        }
+
+        .chart-container h2 {
+            text-align: center;
+            color: #172554;
+            margin-bottom: 25px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 12px; }
+            .cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📊 Email Fraud Analytics Dashboard</h1>
+        <p>Overview of analyzed email classifications</p>
+    </header>
+
+    <div class="links">
+        <a href="/">← Home</a>
+        <a href="{{ url_for('history') }}">📋 View Analysis History</a>
+    </div>
+
+    <section class="cards">
+        <div class="card">
+            <h3>Total Emails Analyzed</h3>
+            <div class="number total">{{ stats.total }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Potential Spam / Phishing</h3>
+            <div class="number phishing">{{ stats.phishing }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Likely Legitimate</h3>
+            <div class="number legitimate">{{ stats.legitimate }}</div>
+        </div>
+    </section>
+
+    <section class="chart-container">
+        <h2>Email Classification Distribution</h2>
+        <canvas id="emailChart"></canvas>
+        <p id="chartMessage"
+           style="text-align:center;color:#64748b;"></p>
+    </section>
+
+    <footer>
+        Email Fraud Detection &amp; Risk Analytics
+    </footer>
+
+    <script>
+        const phishing = Number({{ stats.phishing | tojson }});
+        const legitimate = Number({{ stats.legitimate | tojson }});
+        const total = Number({{ stats.total | tojson }});
+
+        if (total === 0) {
+            document.getElementById("chartMessage").textContent =
+                "No analyzed emails yet. Analyze an email to see statistics.";
+        } else {
+            new Chart(document.getElementById("emailChart"), {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "Potential Spam / Phishing",
+                        "Likely Legitimate"
+                    ],
+                    datasets: [{
+                        data: [phishing, legitimate],
+                        backgroundColor: ["#dc2626", "#059669"],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
