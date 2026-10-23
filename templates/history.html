@@ -5,62 +5,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Analysis History</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
+            color: #1f2937;
             padding: 25px;
+            margin: 0;
         }
-        h1 { text-align: center; color: #243447; }
+
+        h1 {
+            text-align: center;
+            color: #243447;
+            margin-bottom: 25px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .home-button {
+            background: #2563eb;
+        }
+
+        .home-button:hover {
+            background: #1d4ed8;
+        }
+
+        .dashboard-button {
+            background: #172554;
+        }
+
+        .dashboard-button:hover {
+            background: #1e40af;
+        }
+
         .table-container {
             overflow-x: auto;
             background: white;
             padding: 15px;
             border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 650px;
         }
+
         th, td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
             overflow-wrap: anywhere;
+            vertical-align: top;
         }
-        th { background: #243447; color: white; }
-        tr:nth-child(even) { background: #f2f2f2; }
-        a { display: inline-block; margin-bottom: 15px; }
+
+        th {
+            background: #243447;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .nav-button {
+                text-align: center;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <h1>Email Analysis History</h1>
-    <a href="/">← Back to Home</a>
+
+    <h1>📋 Email Analysis History</h1>
+
+    <div class="navigation">
+        <a href="{{ url_for('index') }}" class="nav-button home-button">
+            ← Back to Home
+        </a>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-button dashboard-button">
+            📊 View Risk Dashboard
+        </a>
+    </div>
 
     <div class="table-container">
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Email Text</th>
-                <th>Prediction</th>
-                <th>Risk Level</th>
-                <th>Analyzed At</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email Text</th>
+                    <th>Prediction</th>
+                    <th>Risk Level</th>
+                    <th>Analyzed At</th>
+                </tr>
+            </thead>
 
-            {% for record in records %}
-            <tr>
-                <td>{{ record[0] }}</td>
-                <td>{{ record[1] }}</td>
-                <td>{{ record[2] }}</td>
-                <td>{{ record[3] }}</td>
-                <td>{{ record[4] }}</td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="5">No analysis history found.</td>
-            </tr>
-            {% endfor %}
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        No analysis history found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
+
+    <footer>
+        Email Fraud Detection &amp; Risk Analytics Using Machine Learning
+    </footer>
+
 </body>
 </html>
