@@ -8,9 +8,7 @@ from mysql.connector import Error
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-@app.route("/test-history")
-def test_history():
-    return "History route test is working!"
+
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "email_fraud_model.pkl"
 CA_PATH = BASE_DIR / "isrgrootx1.pem"
